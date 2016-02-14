@@ -35,6 +35,7 @@ hist(steps_day, main = "Steps", ylab="frequency",
 
 ![](PA1_Template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
+The histogram appears to have a somewhat normal curve.
 
 Find the mean and median number of steps taken each day
 
@@ -55,5 +56,11 @@ Create code to impute missing data
 Histogram of total number of steps from imputed data
 ![](PA1_Template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
+
+The imputed data looks similar to the non-imputed data.
+
 Avg number of steps panel plot of weekends vs weekdays 
 ![](PA1_Template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+
+
+This weekend vs weekday looks similar.

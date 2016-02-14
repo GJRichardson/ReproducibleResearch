@@ -36,6 +36,7 @@ hist(steps_day, main = "Steps", ylab="frequency",
      xlab="Total Steps", col="blue", breaks=10)
 ```
 
+The histogram appears to have a somewhat normal curve.
 
 Find the mean and median number of steps taken each day
 ```{r, echo=FALSE}
@@ -72,6 +73,9 @@ mean_steps_imputed <- aggregate(input.mean$steps ~ input.mean$date, input.mean, 
 median_steps_imputed <- aggregate(data$steps ~ data$date, data, median)
 ```
 
+
+The imputed data looks similar to the non-imputed data.
+
 Avg number of steps panel plot of weekends vs weekdays 
 ```{r, echo=FALSE}
 input.mean$wday <-weekdays(as.Date(input.mean$date))
@@ -82,9 +86,12 @@ input.mean$wday <-as.factor(input.mean$wday)
 library(lattice)
 xyplot(steps ~ interval | wday, data=input.mean,
        layout = c(1,2), type = "1", col = "red", 
-       xlab="Interval", ylab="Number of Steps", 
-       ylim=c(-15,240),
+       xlab="Interval", ylab="Steps", 
+       ylim=c(-5,300),
        panel = function(x, y, ...){
          panel.average(x,y,...,horizontal=FALSE)
        })
 ```
+
+
+This weekend vs weekday looks similar.
