@@ -1,3 +1,8 @@
+----
+output: 
+  html_document: 
+    keep_md: yes
+----
 Coursera Project File: PA1_Template.Rmd
 ========================
 ##Garrett Richardson
@@ -28,14 +33,14 @@ hist(steps_day, main = "Steps", ylab="frequency",
      xlab="Total Steps", col="blue", breaks=10)
 ```
 
-![](PA1_Template_files/figure-html/unnamed-chunk-3-1.png)
+![](PA1_Template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 
 Find the mean and median number of steps taken each day
 
 
 A time series plot of the average number of steps
-![](PA1_Template_files/figure-html/unnamed-chunk-5-1.png)
+![](PA1_Template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 Find the interval containing the maximum number of steps
 
@@ -48,7 +53,7 @@ Create code to impute missing data
 ## [1] 2304
 ```
 Histogram of total number of steps from imputed data
-![](PA1_Template_files/figure-html/unnamed-chunk-8-1.png)
+![](PA1_Template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 Avg number of steps panel plot of weekends vs weekdays 
-![](PA1_Template_files/figure-html/unnamed-chunk-9-1.png)
+![](PA1_Template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
