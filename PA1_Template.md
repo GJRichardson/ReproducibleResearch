@@ -39,27 +39,83 @@ The histogram appears to have a somewhat normal curve.
 
 Find the mean and median number of steps taken each day
 
+```r
+mean_steps <- aggregate(data$steps ~ data$date, data, mean)
+median_steps <- aggregate(data$steps ~ data$date, data, median)
+```
 
 A time series plot of the average number of steps
+
+```r
+interval_steps <- aggregate(steps~interval, data, mean)
+plot(interval_steps$interval, interval_steps$steps, type="l", 
+     main="Avg Steps", xlab="Interval", ylab="Steps", col="blue")
+```
+
 ![](PA1_Template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 Find the interval containing the maximum number of steps
+
+```r
+interval_max <- interval_steps[which.max(interval_steps$steps), 1]
+interval_max
+```
 
 ```
 ## [1] 835
 ```
 Create code to impute missing data
 
+```r
+data_NA <- read.csv("activity.csv", header=TRUE)
+total_data_NA <- sum(is.na(data_NA$steps))
+total_data_NA
+```
+
 ```
 ## [1] 2304
 ```
+
+```r
+input.mean <- data_NA
+input.mean[is.na(input.mean$steps), 1] <- mean(data_NA$steps, na.rm=TRUE)
+```
 Histogram of total number of steps from imputed data
+
+```r
+steps_day_imputed <- tapply(input.mean$steps, input.mean$date, sum)
+hist(steps_day_imputed, main = "Steps", ylab="frequency", 
+     xlab="Total Steps", col="blue", breaks=10)
+```
+
 ![](PA1_Template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
+```r
+mean_steps_imputed <- aggregate(input.mean$steps ~ input.mean$date, input.mean, mean)
+median_steps_imputed <- aggregate(data$steps ~ data$date, data, median)
+```
 
-The imputed data looks similar to the non-imputed data.
+
+The imputed data looks similar to the non-imputed data.  There doesn't seem to be much of an impact.
 
 Avg number of steps panel plot of weekends vs weekdays 
+
+```r
+input.mean$wday <-weekdays(as.Date(input.mean$date))
+input.mean$wday[input.mean$wday=="Sunday" | input.mean$wday == "Saturday"]<-"weekend"
+input.mean$wday[input.mean$wday!="weekend"] <-"weekday"
+input.mean$wday <-as.factor(input.mean$wday)
+
+library(lattice)
+xyplot(steps ~ interval | wday, data=input.mean,
+       layout = c(1,2), type = "1", col = "red", 
+       xlab="Interval", ylab="Steps", 
+       ylim=c(-5,300),
+       panel = function(x, y, ...){
+         panel.average(x,y,...,horizontal=FALSE)
+       })
+```
+
 ![](PA1_Template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 
