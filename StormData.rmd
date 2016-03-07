@@ -1,0 +1,146 @@
+---
+output: 
+  html_document: 
+    keep_md: yes
+---
+#Title - Storm Data Analysis
+##This report lays out the most costly and deadly storm event types in the United States from January of 1950 until November of 2011.
+
+
+##Synopsis
+###The Data in the following code (once it has been read in) will be manipulated in such a way as to produce a list and graph of the most deadly and economically destructive weather events by type.  This will be accomplished by assigning a third variable to both economic damanage and human damage, quantifying injuries relative to death.  Human injuries will be increased by a multiple of ten and and added to human deaths to create the third variable.  Moreover, crop damage and property damange will be added together to creat the third variable.  Each type of desstructive assessment will be based on these two new variables.  
+
+##Data Processing
+###Read in datafile csv.bz2
+###Load file directly from csv.bz2 folder
+###We used a head() function to get an idea of the scope of the data
+```{r, echo=TRUE}
+data <- read.csv("repdata-data-StormData.csv.bz2", header=TRUE) 
+head(data)
+```
+
+##Data Transformation and Manipulation (Harmful)
+
+##Create and sum a variable of total fatalities
+```{r, echo=TRUE}
+sum <- sum(data$FATALITIES)
+total_fatalities <- tapply(data$FATALITIES, data$EVTYPE, sum)
+```
+##Display total fatalities variable
+```{r, echo=TRUE}
+
+```
+##Find and display the weather event type that has the most fatalities.
+```{r, echo=TRUE}
+max_fatalities <- max(total_fatalities)
+print(max_fatalities)
+```
+##Create and sum a variable of total injuries
+```{r, echo=TRUE}
+total_injuries <- tapply(data$INJURIES, data$EVTYPE, sum)
+
+```
+##Find and display the weather event type that has the most injuries.
+```{r, echo=TRUE}
+max_injuries <- max(total_injuries)
+print(max_injuries)
+```
+##Create a new variable wich creates a relative value for fatalities. ie, one fataltiy would be equal to 10 injuries.
+```{r, echo=TRUE}
+magnitude_fatalities <- total_fatalities*10
+
+```
+##Create a new variable called "harmful" wich combines total injuries and magntitud fatalities variable.
+```{r, echo=TRUE}
+harmful <- (magnitude_fatalities + total_injuries)
+
+```
+##Add this new variable, "harmful", to the dataframe and display the 'head' for reference.
+```{r, echo=TRUE}
+
+data_with_harmful <- data
+data_with_harmful$harmful <- data$FATALITIES*10 + data$INJURIES
+head(data_with_harmful)
+```
+##Create a variable 'total harmful' which sums by event type.
+```{r, echo=TRUE}
+total_harmful <- tapply(data_with_harmful$harmful, data_with_harmful$EVTYPE, sum)
+```
+###Create a list in decreasing order of the most harmful weather types and display. This list will display the six most harmful weather event types.
+```{r, echo=TRUE}
+descending_sort_harmful <- sort(total_harmful, decreasing = TRUE)
+top_harmful <- head(descending_sort_harmful)
+print(top_harmful)
+```
+###Key for weather event type (Index):
+####1:Toronado
+####2:Excessive Heat
+####3:Lightning
+####4:Thunderstorm Wind
+####5:Flash Flood
+####6:Flood
+
+##Plot the most harmful weather event types.  Top 6 in descending order.
+```{r, echo=TRUE}
+plot(top_harmful, type="b", main='Top Harmful')
+```
+
+
+##Data Transformation and Manipulation (Destructful)
+```{r, echo=TRUE}
+data_with_damage <- data
+```
+###Create a total property damage variables
+```{r, echo=TRUE}
+total_prop_damange <- tapply(data$PROPDMG, data$EVTYPE, sum)
+```
+##Find the maximum property damage
+```{r, echo=TRUE}
+max_prop_damage <- max(total_prop_damange)
+max_prop_damage
+total_crop_damage <- tapply(data$CROPDMG, data$EVTYPE, sum)
+```
+##Create total injuries variable
+```{r, echo=TRUE}
+max_injuries <- max(total_injuries)
+print(max_injuries)
+```
+##Add this new variable, "costly", to the dataframe.
+```{r, echo=TRUE}
+data_with_damage$costly <- data$PROPDMG + data$CROPDMG
+head(data_with_damage$costly)
+
+total_costly <- tapply(data_with_damage$costly, data_with_damage$EVTYPE, sum)
+
+```
+###Create a list in decreasing order of the most costly weather types.
+```{r, echo=TRUE}
+descending_sort_costly <- sort(total_costly, decreasing = TRUE)
+top_costly <- head(descending_sort_costly)
+print(top_costly)
+```
+###Key for weather event type (Index):
+####1:Toronado
+####2:Excessive Heat
+####3:Lightning
+####4:Thunderstorm Wind
+####5:Flash Flood
+####6:Flood
+
+
+##Plot the most costly weather event types, top 6 in descending order.
+```{r, echo=TRUE}
+plot(top_costly, type="b", main='Top Costly $')
+```
+
+
+#Results
+##Here is a list of both top costly and top harmful weather event types. It's clear that toronados are the most destructive weather event type for both cost and human life.
+##Costly
+```{r, echo=TRUE}
+print(top_costly)
+```
+##Harmful
+```{r, echo=TRUE}
+print(top_harmful)
+```
